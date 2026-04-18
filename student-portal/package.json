@@ -1,0 +1,12 @@
+{
+  "name": "student-portal",
+  "version": "1.0.0",
+  "description": "Student Portal server for College Event Registration System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="student-portal-page">
+  <header class="navbar student-navbar">
+    <div class="container navbar-inner">
+      <div class="logo">
+        <img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" />
+      </div>
+      <a class="brand" href="index.html">Student Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Student navigation">
+        <a href="index.html">Dashboard</a>
+        <a href="events.html">Events</a>
+        <a class="active" href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2>Student Registration Form</h2>
+        <p>Fill all details and submit.</p>
+
+        <section class="card" style="max-width: 780px;">
+          <form id="registrationForm">
+            <div class="form-grid">
+              <div class="field">
+                <label for="studentName">Student Name</label>
+                <input id="studentName" type="text" required />
+              </div>
+              <div class="field">
+                <label for="enrollmentNo">Enrollment No</label>
+                <input id="enrollmentNo" type="text" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" type="email" required />
+              </div>
+              <div class="field">
+                <label for="department">Department</label>
+                <input id="department" type="text" required />
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" type="tel" required />
+              </div>
+              <div class="field">
+                <label for="eventId">Event</label>
+                <select id="eventId" required>
+                  <option value="">Loading events...</option>
+                </select>
+              </div>
+              <div class="field full">
+                <div id="selectedEventInfo" class="selection-info">Select an event to see the eligibility criteria.</div>
+              </div>
+              <div class="field full">
+                <div id="customFieldsContainer" class="custom-fields"></div>
+              </div>
+              <div class="field full actions">
+                <button class="btn btn-primary" type="submit">Submit Registration</button>
+                <a class="btn btn-secondary" href="events.html">Back to Events</a>
+              </div>
+            </div>
+          </form>
+          <div id="formMessage" class="message" style="display: none;"></div>
+        </section>
+
+        <section id="qrCodeSection" class="qr-section" style="display:none;">
+          <div class="card qr-card">
+            <h3>Event Entry QR Code</h3>
+            <p>Show this QR code at the event entry desk.</p>
+            <div id="qrCodeContainer" class="qr-code"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/api-base.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

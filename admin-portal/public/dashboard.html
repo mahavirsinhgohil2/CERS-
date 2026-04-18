@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo">
+        <img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" />
+      </div>
+      <a class="brand" href="dashboard.html">Admin Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Admin navigation">
+        <a class="active" href="dashboard.html">Dashboard</a>
+        <a href="manage-events.html">Event Management</a>
+        <a href="registrations.html">Registrations</a>
+           <a href="feedback.html">Feedback</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-primary" href="manage-events.html#eventForm">Add Event</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section dashboard-hero-section">
+      <div class="container">
+        <section class="dashboard-hero card-glass">
+          <div class="hero-content">
+              <p class="hero-tag">Admin Overview</p>
+              <h2>Dashboard Summary</h2>
+            <p class="hero-text">Welcome Admin. Monitor events, registrations, and performance in one place.</p>
+            <p id="systemStatus" class="hero-status">System Status: Loading...</p>
+            <p id="currentDateText" class="hero-date">Date: --</p>
+          </div>
+          <div class="quick-actions">
+            <a class="btn btn-primary" href="manage-events.html#eventForm">Add Event</a>
+            <a class="btn btn-secondary" href="manage-events.html">Manage Events</a>
+            <a class="btn btn-secondary" href="registrations.html">View Registrations</a>
+          </div>
+        </section>
+
+        <section class="dashboard-section">
+          <h3 class="section-title">Key Performance Indicators</h3>
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <span class="kpi-icon">EV</span>
+              <p class="kpi-label">Total Events</p>
+              <p id="totalEvents" class="kpi-value">0</p>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-icon">RG</span>
+              <p class="kpi-label">Total Registrations</p>
+              <p id="totalRegistrations" class="kpi-value">0</p>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-icon">UP</span>
+              <p class="kpi-label">Upcoming Events</p>
+              <p id="upcomingEvents" class="kpi-value">0</p>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-icon">ER</span>
+              <p class="kpi-label">Events With Registrations</p>
+              <p id="eventsWithRegistrations" class="kpi-value">0</p>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-icon">OA</span>
+              <p class="kpi-label">Open to All Events</p>
+              <p id="openToAllEvents" class="kpi-value">0</p>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-icon">DS</span>
+              <p class="kpi-label">Department-Specific Events</p>
+              <p id="departmentSpecificEvents" class="kpi-value">0</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-section insights-grid">
+          <article class="insight-panel card-glass">
+            <h3 class="section-title">Detailed Event Insights</h3>
+            <div class="insight-list">
+              <div class="insight-item">
+                <span class="insight-label">Most Popular Event</span>
+                <span id="mostPopularEvent" class="insight-value">--</span>
+              </div>
+              <div class="insight-item">
+                <span class="insight-label">Least Popular Event</span>
+                <span id="leastPopularEvent" class="insight-value">--</span>
+              </div>
+              <div class="insight-item">
+                <span class="insight-label">Next Upcoming Event</span>
+                <span id="nextUpcomingEvent" class="insight-value">--</span>
+              </div>
+              <div class="insight-item">
+                <span class="insight-label">Unique Departments Registered</span>
+                <span id="uniqueDepartments" class="insight-value">0</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="recent-panel card-glass">
+            <h3 class="section-title">Recent Registrations</h3>
+            <div class="table-wrap dashboard-table-wrap">
+              <table class="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Event</th>
+                    <th>Department</th>
+                    <th>Record</th>
+                  </tr>
+                </thead>
+                <tbody id="recentRegistrationsBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="dashboard-section">
+          <h3 class="section-title">Event Performance</h3>
+          <div id="eventPerformanceContainer" class="performance-grid"></div>
+        </section>
+
+        <div id="dashboardMessage" class="message" style="display:none;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-content">
+        <p>&copy; 2026 Silver Oak University. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-base.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

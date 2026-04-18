@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Registrations | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo">
+        <img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" />
+      </div>
+      <a class="brand" href="dashboard.html">Admin Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Admin navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="manage-events.html">Event Management</a>
+        <a class="active" href="registrations.html">Registrations</a>
+        <a href="feedback.html">Feedback</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2>Registrations by Event</h2>
+        <p>View confirmed and waitlisted students. Use search and filters for quick tracking.</p>
+
+        <section class="card registration-controls">
+          <div class="form-grid registration-filter-grid">
+            <div class="field">
+              <label for="searchInput">Search</label>
+              <input id="searchInput" type="text" placeholder="Student name, enrollment no, or event" />
+            </div>
+            <div class="field">
+              <label for="eventFilter">Filter by Event</label>
+              <select id="eventFilter">
+                <option value="">All Events</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="departmentFilter">Filter by Department</label>
+              <select id="departmentFilter">
+                <option value="">All Departments</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="statusFilter">Filter by Status</label>
+              <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="waitlisted">Waitlisted</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="eligibilityFilter">Filter by Eligibility</label>
+              <select id="eligibilityFilter">
+                <option value="">All Eligibility Types</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="feedbackFilter">Filter by Feedback</label>
+              <select id="feedbackFilter">
+                <option value="">All</option>
+                <option value="submitted">Feedback Submitted</option>
+                <option value="not_submitted">Feedback Not Submitted</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions" style="margin-top:10px;">
+            <button class="btn btn-secondary" id="clearFiltersButton" type="button">Clear Filters</button>
+            <button class="btn btn-primary" id="exportCsvButton" type="button">Export CSV</button>
+          </div>
+        </section>
+
+        <div id="registrationsContainer" class="event-groups"></div>
+        <div id="registrationsMessage" class="message" style="display:none;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-content">
+        <p>&copy; 2026 Silver Oak University. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-base.js"></script>
+  <script src="js/registrations.js"></script>
+</body>
+</html>

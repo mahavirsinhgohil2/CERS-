@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback Center | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo"><img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" /></div>
+      <a class="brand" href="dashboard.html">Student Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Student navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="qr-wallet.html">QR Wallet</a>
+        <a href="recommendations.html">Recommendations</a>
+        <a href="waitlist.html">Waitlist</a>
+        <a href="timeline.html">Timeline</a>
+        <a class="active" href="feedback-center.html">Feedback</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="hero">
+          <p class="eyebrow">Post Event Feedback</p>
+          <h1>Feedback Center</h1>
+          <p>Submit a short rating and comment for completed events you attended.</p>
+        </div>
+        <div id="feedbackMessage" class="message" style="display:none;"></div>
+        <div id="feedbackCenterContainer" class="cards-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div class="footer-content"><p>&copy; 2026 Silver Oak University. All rights reserved.</p></div></div></footer>
+  <script src="js/api-base.js"></script>
+  <script src="js/student-common.js"></script>
+  <script src="js/feedback-center.js"></script>
+</body>
+</html>

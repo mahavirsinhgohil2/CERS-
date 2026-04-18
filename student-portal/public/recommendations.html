@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommendations | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo"><img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" /></div>
+      <a class="brand" href="dashboard.html">Student Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Student navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="qr-wallet.html">QR Wallet</a>
+        <a class="active" href="recommendations.html">Recommendations</a>
+        <a href="waitlist.html">Waitlist</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="feedback-center.html">Feedback</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="hero">
+          <p class="eyebrow">Smart Suggestions</p>
+          <h1>Recommended Events</h1>
+          <p>Simple rule-based suggestions based on your department, recent registrations, and trending events.</p>
+        </div>
+        <div id="recommendationsMessage" class="message" style="display:none;"></div>
+        <div id="recommendationsContainer" class="cards-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div class="footer-content"><p>&copy; 2026 Silver Oak University. All rights reserved.</p></div></div></footer>
+  <script src="js/api-base.js"></script>
+  <script src="js/student-common.js"></script>
+  <script src="js/recommendations.js"></script>
+</body>
+</html>

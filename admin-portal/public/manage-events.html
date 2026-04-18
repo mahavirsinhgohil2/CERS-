@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Events | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo">
+        <img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" />
+      </div>
+      <a class="brand" href="dashboard.html">Admin Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Admin navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a class="active" href="manage-events.html">Manage Events</a>
+        <a href="registrations.html">Registrations</a>
+        <a href="feedback.html">Feedback</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-primary" href="#eventForm">Add Event</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2>Manage Events</h2>
+        <p>Add new events or edit existing ones using the same simple form.</p>
+
+        <section class="card" id="eventForm">
+          <form id="eventFormElement">
+            <input type="hidden" id="eventId" value="" />
+            <div class="form-grid">
+              <div class="field full">
+                <label for="eventName">Event Name</label>
+                <input id="eventName" type="text" required />
+              </div>
+              <div class="field">
+                <label for="eventDate">Date</label>
+                <input id="eventDate" type="date" required />
+              </div>
+              <div class="field">
+                <label for="eventLocation">Location</label>
+                <input id="eventLocation" type="text" required />
+              </div>
+              <div class="field">
+                <label for="eventEligibility">Eligibility Criteria</label>
+                <select id="eventEligibility" required>
+                  <option value="Open to All">Open to All</option>
+                  <option value="IT Department Only">IT Department Only</option>
+                  <option value="CSE Department Only">CSE Department Only</option>
+                  <option value="4th Semester Only">4th Semester Only</option>
+                  <option value="IT and CSE Students">IT and CSE Students</option>
+                  <option value="Final Year Students">Final Year Students</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="eventSeatCapacity">Seat Capacity</label>
+                <input id="eventSeatCapacity" type="number" min="1" value="100" required />
+              </div>
+              <div class="field">
+                <label for="eventWaitlist">Enable Waitlist</label>
+                <select id="eventWaitlist">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="eventDescription">Description</label>
+                <textarea id="eventDescription"></textarea>
+              </div>
+              <div class="field full">
+                <label>Custom Registration Fields</label>
+                <p class="field-help">Add simple extra fields that students will see during registration.</p>
+                <div id="customFieldsContainer" class="custom-fields"></div>
+                <button class="btn btn-secondary" id="addCustomFieldButton" type="button">Add Custom Field</button>
+              </div>
+              <div class="field full actions">
+                <button class="btn btn-primary" id="eventSubmitButton" type="submit">Add Event</button>
+                <button class="btn btn-secondary" id="clearEditButton" type="button">Clear Form</button>
+              </div>
+            </div>
+          </form>
+          <div id="manageEventMessage" class="message" style="display:none;"></div>
+        </section>
+
+        <section class="section" style="padding-bottom: 0;">
+          <h3 class="mb-2">Existing Events</h3>
+          <div id="eventsList" class="grid cards"></div>
+          <div id="eventsListMessage" class="message" style="display:none;"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-content">
+        <p>&copy; 2026 Silver Oak University. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-base.js"></script>
+  <script src="js/manage-events.js"></script>
+</body>
+</html>

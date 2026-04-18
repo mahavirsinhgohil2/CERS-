@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Events | College Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="student-portal-page">
+  <header class="navbar student-navbar">
+    <div class="container navbar-inner">
+      <div class="logo">
+        <img src="images/silver-oak-logo.png" alt="Silver Oak University Logo" />
+      </div>
+      <a class="brand" href="index.html">Student Portal - Silver Oak University</a>
+      <nav class="nav-links" aria-label="Student navigation">
+        <a href="index.html">Dashboard</a>
+        <a class="active" href="events.html">Events</a>
+        <a href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2>Available Events</h2>
+        <p>Browse all live events, seat capacity, and waitlist availability from the backend API.</p>
+
+        <div id="eventsContainer" class="grid cards"></div>
+        <div id="eventsMessage" class="message error" style="display: none;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-content">
+        <p>&copy; 2026 Silver Oak University. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-base.js"></script>
+  <script src="js/events.js"></script>
+</body>
+</html>
