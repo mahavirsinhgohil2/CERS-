@@ -8,28 +8,25 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
-const localOrigins = [
+const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:4000',
-  'http://127.0.0.1:3000',
-  'http://127.0.0.1:4000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'https://student-portal-henna.vercel.app',
+  'https://admin-portal-lyart-one.vercel.app'
 ];
 
-const configuredOrigins = String(process.env.CORS_ORIGINS || process.env.FRONTEND_ORIGINS || '')
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
-const allowedOrigins = new Set([...localOrigins, ...configuredOrigins]);
-
 app.use(cors({
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin)) {
-      return callback(null, true);
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS Not Allowed: ' + origin));
     }
-
-    return callback(new Error(`CORS blocked for origin: ${origin}`));
   },
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  credentials: true
 }));
 app.use(express.json());
 
