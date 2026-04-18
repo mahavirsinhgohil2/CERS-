@@ -10,7 +10,6 @@ const eligibilityFilter = document.getElementById('eligibilityFilter');
 const feedbackFilter = document.getElementById('feedbackFilter');
 const clearFiltersButton = document.getElementById('clearFiltersButton');
 const exportCsvButton = document.getElementById('exportCsvButton');
-const API_BASE = window.API_BASE;
 
 let allEventGroups = [];
 
@@ -136,7 +135,7 @@ function renderRegistrations(eventGroups) {
       }
 
       try {
-        const response = await fetch(`${API_BASE}/registrations/${registrationId}`, {
+        const response = await fetch(`${window.API_BASE}/registrations/${registrationId}`, {
           method: 'DELETE',
         });
         const result = await response.json();
@@ -256,8 +255,8 @@ function fillFilterOptions(eventGroups, registrations) {
 async function loadRegistrations() {
   try {
     const [groupResponse, registrationResponse] = await Promise.all([
-      fetch(`${API_BASE}/registrations-by-event`),
-      fetch(`${API_BASE}/registrations?${buildQueryFromFilters()}`),
+      fetch(`${window.API_BASE}/registrations-by-event`),
+      fetch(`${window.API_BASE}/registrations?${buildQueryFromFilters()}`),
     ]);
 
     if (!groupResponse.ok || !registrationResponse.ok) {
@@ -295,7 +294,7 @@ clearFiltersButton.addEventListener('click', () => {
 });
 
 exportCsvButton.addEventListener('click', () => {
-  window.location.href = `${API_BASE}/registrations/export/csv`;
+  window.location.href = `${window.API_BASE}/registrations/export/csv`;
 });
 
 loadRegistrations();

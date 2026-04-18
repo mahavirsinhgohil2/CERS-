@@ -18,8 +18,6 @@ const currentDateText = document.getElementById('currentDateText');
 const systemStatus = document.getElementById('systemStatus');
 const dashboardMessage = document.getElementById('dashboardMessage');
 
-const API_BASE = window.API_BASE;
-
 function showMessage(text, type) {
   dashboardMessage.textContent = text;
   dashboardMessage.className = `message ${type}`;
@@ -181,8 +179,8 @@ function updateInsights(events, registrations, registrationCountMap) {
 async function loadDashboardSummary() {
   try {
     const [eventsResponse, registrationsResponse] = await Promise.all([
-      fetch(`${API_BASE}/events`),
-      fetch(`${API_BASE}/registrations`),
+      fetch(`${window.API_BASE}/events`),
+      fetch(`${window.API_BASE}/registrations`),
     ]);
 
     if (!eventsResponse.ok || !registrationsResponse.ok) {

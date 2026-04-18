@@ -1,6 +1,5 @@
 // Student dashboard script
 // Loads student-specific portal data and renders dashboard sections.
-const API_BASE = window.API_BASE;
 const studentProfileForm = document.getElementById('studentProfileForm');
 const studentNameInput = document.getElementById('studentNameInput');
 const studentEmailInput = document.getElementById('studentEmailInput');
@@ -481,7 +480,7 @@ function renderFeedbackCenter(registrations) {
       const comments = form.comments.value.trim();
 
       try {
-        const response = await fetch(`${API_BASE}/feedback`, {
+        const response = await fetch(`${window.API_BASE}/feedback`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -578,8 +577,8 @@ async function loadDashboard() {
 
   try {
     const [eventsResponse, registrationsResponse] = await Promise.all([
-      fetch(`${API_BASE}/events`),
-      fetch(`${API_BASE}/registrations`),
+      fetch(`${window.API_BASE}/events`),
+      fetch(`${window.API_BASE}/registrations`),
     ]);
 
     if (!eventsResponse.ok || !registrationsResponse.ok) {

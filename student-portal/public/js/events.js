@@ -2,7 +2,6 @@
 // Loads events from backend API and shows cards.
 const eventsContainer = document.getElementById('eventsContainer');
 const eventsMessage = document.getElementById('eventsMessage');
-const API_BASE = window.API_BASE;
 
 function showMessage(text) {
   eventsMessage.textContent = text;
@@ -38,7 +37,7 @@ function createEventCard(event) {
 
 async function loadEvents() {
   try {
-    const response = await fetch(`${API_BASE}/events`);
+    const response = await fetch(`${window.API_BASE}/events`);
 
     if (!response.ok) {
       throw new Error('Failed to load events.');

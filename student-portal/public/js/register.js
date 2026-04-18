@@ -7,7 +7,6 @@ const selectedEventInfo = document.getElementById('selectedEventInfo');
 const customFieldsContainer = document.getElementById('customFieldsContainer');
 const qrCodeSection = document.getElementById('qrCodeSection');
 const qrCodeContainer = document.getElementById('qrCodeContainer');
-const API_BASE = window.API_BASE;
 const eventsById = new Map();
 
 function loadSavedProfile() {
@@ -177,7 +176,7 @@ function updateSelectedEventInfo() {
 
 async function loadEvents() {
   try {
-    const response = await fetch(`${API_BASE}/events`);
+    const response = await fetch(`${window.API_BASE}/events`);
 
     if (!response.ok) {
       throw new Error('Unable to load events.');
@@ -247,7 +246,7 @@ registrationForm.addEventListener('submit', async (event) => {
   }
 
   try {
-    const response = await fetch(`${API_BASE}/register`, {
+    const response = await fetch(`${window.API_BASE}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -6,7 +6,6 @@ const clearFeedbackFilters = document.getElementById('clearFeedbackFilters');
 const feedbackSummaryContainer = document.getElementById('feedbackSummaryContainer');
 const feedbackCommentsContainer = document.getElementById('feedbackCommentsContainer');
 const feedbackMessage = document.getElementById('feedbackMessage');
-const API_BASE = window.API_BASE;
 
 let allFeedbackRows = [];
 let allSummaryRows = [];
@@ -128,7 +127,7 @@ function applyFeedbackFilters() {
 
 async function loadFeedback() {
   try {
-    const response = await fetch(`${API_BASE}/feedback`);
+    const response = await fetch(`${window.API_BASE}/feedback`);
 
     if (!response.ok) {
       throw new Error('Failed to load feedback records.');

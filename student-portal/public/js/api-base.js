@@ -1,9 +1,10 @@
-const isLocal = window.location.hostname === 'localhost'
-             || window.location.hostname === '127.0.0.1';
+(function () {
+  const apiBase =
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:5000'
+      : 'https://cers-4occ.onrender.com';
 
-const API_BASE = isLocal
-  ? 'http://localhost:3000'
-  : 'https://cers-4occ.onrender.com';
-
-window.API_BASE = API_BASE;
-window.STUDENT_API_BASE = API_BASE;
+  window.API_BASE = apiBase;
+  window.STUDENT_API_BASE = apiBase;
+})();

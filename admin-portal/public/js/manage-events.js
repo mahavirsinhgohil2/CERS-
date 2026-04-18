@@ -1,6 +1,5 @@
 // Manage Events page script
 // Supports add, edit, and delete in one simple beginner-friendly page.
-const API_BASE = window.API_BASE;
 const eventFormElement = document.getElementById('eventFormElement');
 const eventIdInput = document.getElementById('eventId');
 const eventNameInput = document.getElementById('eventName');
@@ -196,7 +195,7 @@ function createEventCard(eventItem) {
 
 async function loadEvents() {
   try {
-    const response = await fetch(`${API_BASE}/events`);
+    const response = await fetch(`${window.API_BASE}/events`);
 
     if (!response.ok) {
       throw new Error('Failed to load events.');
@@ -266,7 +265,7 @@ async function handleDeleteEvent(event) {
   const eventId = event.currentTarget.getAttribute('data-delete-id');
 
   try {
-    const response = await fetch(`${API_BASE}/events/${eventId}`, {
+    const response = await fetch(`${window.API_BASE}/events/${eventId}`, {
       method: 'DELETE',
     });
 
@@ -310,7 +309,7 @@ eventFormElement.addEventListener('submit', async (event) => {
 
   try {
     const isEditMode = Boolean(eventId);
-    const response = await fetch(`${API_BASE}/events${isEditMode ? `/${eventId}` : ''}`, {
+    const response = await fetch(`${window.API_BASE}/events${isEditMode ? `/${eventId}` : ''}`, {
       method: isEditMode ? 'PUT' : 'POST',
       headers: {
         'Content-Type': 'application/json',
