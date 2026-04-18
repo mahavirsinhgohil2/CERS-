@@ -17,6 +17,78 @@ const eventPerformanceContainer = document.getElementById('eventPerformanceConta
 const currentDateText = document.getElementById('currentDateText');
 const systemStatus = document.getElementById('systemStatus');
 const dashboardMessage = document.getElementById('dashboardMessage');
+const FORCE_DEMO_MODE = new URLSearchParams(window.location.search).get('demo') === '1';
+
+const DUMMY_EVENTS = [
+  {
+    id: 1,
+    name: 'Tech Fest 2026',
+    date: '2026-05-10',
+    location: 'Silver Oak Auditorium',
+    description: 'A college technology festival with project showcases and competitions.',
+    eligibility_criteria: 'Open to All',
+  },
+  {
+    id: 2,
+    name: 'Coding Competition',
+    date: '2026-05-15',
+    location: 'Lab 3',
+    description: 'A coding contest for diploma and degree students.',
+    eligibility_criteria: 'Open to All',
+  },
+  {
+    id: 3,
+    name: 'AI Seminar',
+    date: '2026-05-20',
+    location: 'Conference Hall',
+    description: 'An expert session on artificial intelligence and future careers.',
+    eligibility_criteria: 'Open to All',
+  },
+  {
+    id: 4,
+    name: 'Poster Presentation',
+    date: '2026-05-25',
+    location: 'Main Campus',
+    description: 'Students present posters on technical and social innovation topics.',
+    eligibility_criteria: 'Open to All',
+  },
+];
+
+const DUMMY_REGISTRATIONS = [
+  {
+    id: 101,
+    event_id: 1,
+    student_name: 'Mahavirsinh Gohil',
+    enrollment_no: 'SOUIT101',
+    email: 'mahavir@example.com',
+    department: 'Information Technology',
+    phone: '9876543210',
+    event_name: 'Tech Fest 2026',
+    event_date: '2026-05-10',
+  },
+  {
+    id: 102,
+    event_id: 2,
+    student_name: 'Priya Patel',
+    enrollment_no: 'SOUIT102',
+    email: 'priya@example.com',
+    department: 'Computer Engineering',
+    phone: '9123456780',
+    event_name: 'Coding Competition',
+    event_date: '2026-05-15',
+  },
+  {
+    id: 103,
+    event_id: 3,
+    student_name: 'Rahul Shah',
+    enrollment_no: 'SOUIT103',
+    email: 'rahul@example.com',
+    department: 'Mechanical Engineering',
+    phone: '9988776655',
+    event_name: 'AI Seminar',
+    event_date: '2026-05-20',
+  },
+];
 
 function showMessage(text, type) {
   dashboardMessage.textContent = text;
@@ -176,8 +248,32 @@ function updateInsights(events, registrations, registrationCountMap) {
   uniqueDepartmentsEl.textContent = String(uniqueDepartments.size);
 }
 
+function renderDashboard(events, registrations) {
+  const registrationCountMap = getRegistrationCountMap(registrations);
+
+  updateKpiCards(events, registrations, registrationCountMap);
+  updateInsights(events, registrations, registrationCountMap);
+  renderRecentRegistrations(registrations);
+  renderEventPerformance(events, registrationCountMap);
+}
+
+function useFallbackDashboard(messageText) {
+  renderDashboard(DUMMY_EVENTS, DUMMY_REGISTRATIONS);
+  showMessage(messageText, 'info');
+  systemStatus.textContent = 'System Status: Demo data mode';
+}
+
 async function loadDashboardSummary() {
+  if (FORCE_DEMO_MODE) {
+    useFallbackDashboard('Demo mode is ON. Showing sample dashboard data.');
+    return;
+  }
+
   try {
+    if (!window.API_BASE) {
+      throw new Error('API base is not available.');
+    }
+
     const [eventsResponse, registrationsResponse] = await Promise.all([
       fetch(`${window.API_BASE}/events`),
       fetch(`${window.API_BASE}/registrations`),
@@ -190,17 +286,16 @@ async function loadDashboardSummary() {
     const events = await eventsResponse.json();
     const registrations = await registrationsResponse.json();
 
-    const registrationCountMap = getRegistrationCountMap(registrations);
+    if (!Array.isArray(events) || events.length === 0 || !Array.isArray(registrations) || registrations.length === 0) {
+      useFallbackDashboard('API returned empty data. Showing demo dashboard data.');
+      return;
+    }
 
-    updateKpiCards(events, registrations, registrationCountMap);
-    updateInsights(events, registrations, registrationCountMap);
-    renderRecentRegistrations(registrations);
-    renderEventPerformance(events, registrationCountMap);
+    renderDashboard(events, registrations);
 
     dashboardMessage.style.display = 'none';
   } catch (error) {
-    showMessage(error.message || 'Something went wrong.', 'error');
-    systemStatus.textContent = 'System Status: Unable to sync data';
+    useFallbackDashboard('API not available. Showing demo dashboard data.');
   }
 }
 

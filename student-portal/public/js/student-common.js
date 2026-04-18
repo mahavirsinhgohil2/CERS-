@@ -11,6 +11,87 @@ const DEMO_STUDENT_PROFILE = {
   mentor: 'Dr. R. Mehta',
   profile_type: 'Demo Student',
 };
+const FORCE_DEMO_MODE = new URLSearchParams(window.location.search).get('demo') === '1';
+
+const DUMMY_EVENTS = [
+  {
+    id: 1,
+    name: 'Tech Fest 2026',
+    date: '2026-05-10',
+    location: 'Silver Oak Auditorium',
+    description: 'A college technology festival with project showcases and competitions.',
+    eligibility_criteria: 'Open to All',
+  },
+  {
+    id: 2,
+    name: 'Coding Competition',
+    date: '2026-05-15',
+    location: 'Lab 3',
+    description: 'A coding contest for diploma and degree students.',
+    eligibility_criteria: 'Open to All',
+  },
+  {
+    id: 3,
+    name: 'AI Seminar',
+    date: '2026-05-20',
+    location: 'Conference Hall',
+    description: 'An expert session on artificial intelligence and future careers.',
+    eligibility_criteria: 'Open to All',
+  },
+  {
+    id: 4,
+    name: 'Poster Presentation',
+    date: '2026-05-25',
+    location: 'Main Campus',
+    description: 'Students present posters on technical and social innovation topics.',
+    eligibility_criteria: 'Open to All',
+  },
+];
+
+const DUMMY_REGISTRATIONS = [
+  {
+    id: 101,
+    event_id: 1,
+    student_name: 'Mahavirsinh Gohil',
+    enrollment_no: 'SOUIT101',
+    email: 'mahavir@example.com',
+    department: 'Information Technology',
+    phone: '9876543210',
+    event_name: 'Tech Fest 2026',
+    event_date: '2026-05-10',
+    event_location: 'Silver Oak Auditorium',
+    registration_status: 'confirmed',
+    feedback_count: 0,
+  },
+  {
+    id: 102,
+    event_id: 2,
+    student_name: 'Priya Patel',
+    enrollment_no: 'SOUIT102',
+    email: 'priya@example.com',
+    department: 'Computer Engineering',
+    phone: '9123456780',
+    event_name: 'Coding Competition',
+    event_date: '2026-05-15',
+    event_location: 'Lab 3',
+    registration_status: 'confirmed',
+    feedback_count: 0,
+  },
+  {
+    id: 103,
+    event_id: 3,
+    student_name: 'Rahul Shah',
+    enrollment_no: 'SOUIT103',
+    email: 'rahul@example.com',
+    department: 'Mechanical Engineering',
+    phone: '9988776655',
+    event_name: 'AI Seminar',
+    event_date: '2026-05-20',
+    event_location: 'Conference Hall',
+    registration_status: 'waitlisted',
+    feedback_count: 0,
+  },
+];
 
 function loadSavedStudentProfile() {
   try {
@@ -62,34 +143,68 @@ function isStudentPastDate(dateText) {
   return String(dateText || '') < new Date().toISOString().split('T')[0];
 }
 
+function filterStudentRegistrations(registrations, email, enrollmentNo) {
+  return registrations.filter((item) => {
+    const itemEmail = String(item.email || '').toLowerCase();
+    const itemEnrollment = String(item.enrollment_no || '').toLowerCase();
+    return (email && itemEmail === email.toLowerCase()) || (enrollmentNo && itemEnrollment === enrollmentNo.toLowerCase());
+  });
+}
+
+function getStudentDemoData(activeProfile) {
+  const profile = {
+    ...DEMO_STUDENT_PROFILE,
+    ...activeProfile,
+  };
+
+  const studentRegistrations = filterStudentRegistrations(DUMMY_REGISTRATIONS, profile.email || '', profile.enrollment_no || '');
+
+  return {
+    profile,
+    events: DUMMY_EVENTS,
+    registrations: studentRegistrations,
+  };
+}
+
 async function fetchStudentPortalData() {
   const activeProfile = getActiveStudentProfile();
   const email = activeProfile?.email || '';
   const enrollmentNo = activeProfile?.enrollment_no || '';
 
-  const [eventsResponse, registrationsResponse] = await Promise.all([
-    fetch(`${STUDENT_API_BASE}/events`),
-    fetch(`${STUDENT_API_BASE}/registrations`),
-  ]);
-
-  if (!eventsResponse.ok || !registrationsResponse.ok) {
-    throw new Error('Failed to load student data.');
+  if (FORCE_DEMO_MODE) {
+    return getStudentDemoData(activeProfile);
   }
 
-  const events = await eventsResponse.json();
-  const registrations = await registrationsResponse.json();
+  if (!STUDENT_API_BASE) {
+    return getStudentDemoData(activeProfile);
+  }
 
-  const studentRegistrations = registrations.filter((item) => {
-    const itemEmail = String(item.email || '').toLowerCase();
-    const itemEnrollment = String(item.enrollment_no || '').toLowerCase();
-    return (email && itemEmail === email.toLowerCase()) || (enrollmentNo && itemEnrollment === enrollmentNo.toLowerCase());
-  });
+  try {
+    const [eventsResponse, registrationsResponse] = await Promise.all([
+      fetch(`${STUDENT_API_BASE}/events`),
+      fetch(`${STUDENT_API_BASE}/registrations`),
+    ]);
 
-  return {
-    profile: activeProfile,
-    events,
-    registrations: studentRegistrations,
-  };
+    if (!eventsResponse.ok || !registrationsResponse.ok) {
+      throw new Error('Failed to load student data.');
+    }
+
+    const events = await eventsResponse.json();
+    const registrations = await registrationsResponse.json();
+    const studentRegistrations = filterStudentRegistrations(registrations, email, enrollmentNo);
+
+    if (!Array.isArray(events) || events.length === 0 || !Array.isArray(studentRegistrations) || studentRegistrations.length === 0) {
+      return getStudentDemoData(activeProfile);
+    }
+
+    return {
+      profile: activeProfile,
+      events,
+      registrations: studentRegistrations,
+    };
+  } catch (error) {
+    return getStudentDemoData(activeProfile);
+  }
 }
 
 function buildEventTheme(event) {

@@ -23,6 +23,114 @@ const qrModal = document.getElementById('qrModal');
 const qrModalBody = document.getElementById('qrModalBody');
 const closeQrModalButton = document.getElementById('closeQrModalButton');
 const downloadQrButton = document.getElementById('downloadQrButton');
+const FORCE_DEMO_MODE = new URLSearchParams(window.location.search).get('demo') === '1';
+
+const DUMMY_EVENTS = [
+  {
+    id: 1,
+    name: 'Tech Fest 2026',
+    date: '2026-05-10',
+    location: 'Silver Oak Auditorium',
+    description: 'A college technology festival with project showcases and competitions.',
+    eligibility_criteria: 'Open to All',
+    seat_capacity: 250,
+    confirmed_count: 120,
+    waitlist_count: 8,
+    enable_waitlist: 1,
+    available_seats: 122,
+  },
+  {
+    id: 2,
+    name: 'Coding Competition',
+    date: '2026-05-15',
+    location: 'Lab 3',
+    description: 'A coding contest for diploma and degree students.',
+    eligibility_criteria: 'Open to All',
+    seat_capacity: 120,
+    confirmed_count: 92,
+    waitlist_count: 4,
+    enable_waitlist: 1,
+    available_seats: 28,
+  },
+  {
+    id: 3,
+    name: 'AI Seminar',
+    date: '2026-05-20',
+    location: 'Conference Hall',
+    description: 'An expert session on artificial intelligence and future careers.',
+    eligibility_criteria: 'Open to All',
+    seat_capacity: 180,
+    confirmed_count: 130,
+    waitlist_count: 0,
+    enable_waitlist: 0,
+    available_seats: 50,
+  },
+  {
+    id: 4,
+    name: 'Poster Presentation',
+    date: '2026-05-25',
+    location: 'Main Campus',
+    description: 'Students present posters on technical and social innovation topics.',
+    eligibility_criteria: 'Open to All',
+    seat_capacity: 200,
+    confirmed_count: 75,
+    waitlist_count: 0,
+    enable_waitlist: 0,
+    available_seats: 125,
+  },
+];
+
+const DUMMY_REGISTRATIONS = [
+  {
+    id: 101,
+    event_id: 1,
+    student_name: 'Mahavirsinh Gohil',
+    enrollment_no: 'SOUIT101',
+    email: 'mahavir@example.com',
+    department: 'Information Technology',
+    phone: '9876543210',
+    event_name: 'Tech Fest 2026',
+    event_date: '2026-05-10',
+    event_location: 'Silver Oak Auditorium',
+    registration_status: 'confirmed',
+    feedback_count: 0,
+  },
+  {
+    id: 102,
+    event_id: 2,
+    student_name: 'Priya Patel',
+    enrollment_no: 'SOUIT102',
+    email: 'priya@example.com',
+    department: 'Computer Engineering',
+    phone: '9123456780',
+    event_name: 'Coding Competition',
+    event_date: '2026-05-15',
+    event_location: 'Lab 3',
+    registration_status: 'confirmed',
+    feedback_count: 0,
+  },
+  {
+    id: 103,
+    event_id: 3,
+    student_name: 'Rahul Shah',
+    enrollment_no: 'SOUIT103',
+    email: 'rahul@example.com',
+    department: 'Mechanical Engineering',
+    phone: '9988776655',
+    event_name: 'AI Seminar',
+    event_date: '2026-05-20',
+    event_location: 'Conference Hall',
+    registration_status: 'waitlisted',
+    feedback_count: 0,
+  },
+];
+
+const DEMO_PROFILE = {
+  student_name: 'Mahavirsinh Gohil',
+  email: 'mahavir@example.com',
+  enrollment_no: 'SOUIT101',
+  department: 'Information Technology',
+};
 
 let currentPortalData = null;
 let currentQrPayload = null;
@@ -556,26 +664,56 @@ function renderPortal(profile, registrations, events) {
   }
 }
 
+function getProfileForDashboard(savedProfile) {
+  return {
+    student_name: studentNameInput.value.trim() || savedProfile?.student_name || DEMO_PROFILE.student_name,
+    email: studentEmailInput.value.trim() || savedProfile?.email || DEMO_PROFILE.email,
+    enrollment_no: studentEnrollmentInput.value.trim() || savedProfile?.enrollment_no || DEMO_PROFILE.enrollment_no,
+    department: studentDepartmentInput.value.trim() || savedProfile?.department || DEMO_PROFILE.department,
+  };
+}
+
+function filterRegistrationsByProfile(allRegistrations, profile) {
+  const normalizedEmail = String(profile.email || '').toLowerCase();
+  const normalizedEnrollment = String(profile.enrollment_no || '').toLowerCase();
+
+  return allRegistrations.filter((item) => {
+    const itemEmail = String(item.email || '').toLowerCase();
+    const itemEnrollment = String(item.enrollment_no || '').toLowerCase();
+    return (normalizedEmail && itemEmail === normalizedEmail) || (normalizedEnrollment && itemEnrollment === normalizedEnrollment);
+  });
+}
+
+function getFallbackPortalData(profile) {
+  return {
+    events: DUMMY_EVENTS,
+    registrations: filterRegistrationsByProfile(DUMMY_REGISTRATIONS, profile),
+  };
+}
+
 async function loadDashboard() {
   const savedProfile = loadSavedProfile();
-  const email = studentEmailInput.value.trim() || savedProfile?.email || '';
-  const enrollmentNo = studentEnrollmentInput.value.trim() || savedProfile?.enrollment_no || '';
+  const profile = getProfileForDashboard(savedProfile);
 
-  if (!email && !enrollmentNo) {
-    dashboardIntro.textContent = 'Enter your email or enrollment number to sync your student dashboard.';
-    profileChip.textContent = 'Profile not set';
-    recentRegistrationsContainer.innerHTML = '<div class="empty-state dark-empty">Save your profile to load your portal data.</div>';
-    qrWalletContainer.innerHTML = '<div class="empty-state dark-empty">QR passes will appear here after you register.</div>';
-    recommendationsContainer.innerHTML = '<div class="empty-state dark-empty">Recommendations will appear after profile sync.</div>';
-    waitlistContainer.innerHTML = '<div class="empty-state dark-empty">Waitlist tracker will appear after profile sync.</div>';
-    timelineContainer.innerHTML = '<div class="empty-state dark-empty">Event timeline will appear after profile sync.</div>';
-    feedbackContainer.innerHTML = '<div class="empty-state dark-empty">Feedback center will appear after profile sync.</div>';
+  if (!savedProfile && !studentEmailInput.value.trim() && !studentEnrollmentInput.value.trim()) {
+    saveProfile(profile);
+    showMessage('Showing demo profile for quick review.', 'info');
+  }
+
+  if (FORCE_DEMO_MODE) {
+    const fallbackData = getFallbackPortalData(profile);
+    renderPortal(profile, fallbackData.registrations, fallbackData.events);
+    showMessage('Demo mode is ON. Showing sample dashboard data.', 'info');
     return;
   }
 
   hideMessage();
 
   try {
+    if (!window.API_BASE) {
+      throw new Error('API base is not available.');
+    }
+
     const [eventsResponse, registrationsResponse] = await Promise.all([
       fetch(`${window.API_BASE}/events`),
       fetch(`${window.API_BASE}/registrations`),
@@ -587,26 +725,24 @@ async function loadDashboard() {
 
     const events = await eventsResponse.json();
     const allRegistrations = await registrationsResponse.json();
-    const normalizedEmail = email.toLowerCase();
-    const normalizedEnrollment = enrollmentNo.toLowerCase();
+    const portalRegistrations = filterRegistrationsByProfile(allRegistrations, profile);
 
-    const portalRegistrations = allRegistrations.filter((item) => {
-      const itemEmail = String(item.email || '').toLowerCase();
-      const itemEnrollment = String(item.enrollment_no || '').toLowerCase();
-      return (normalizedEmail && itemEmail === normalizedEmail) || (normalizedEnrollment && itemEnrollment === normalizedEnrollment);
-    });
+    const hasApiEvents = Array.isArray(events) && events.length > 0;
+    const hasApiRegistrations = Array.isArray(portalRegistrations) && portalRegistrations.length > 0;
 
-    const profile = savedProfile || {
-      student_name: studentNameInput.value.trim(),
-      email,
-      enrollment_no: enrollmentNo,
-      department: studentDepartmentInput.value.trim(),
-    };
+    if (!hasApiEvents || !hasApiRegistrations) {
+      const fallbackData = getFallbackPortalData(profile);
+      renderPortal(profile, fallbackData.registrations, fallbackData.events);
+      showMessage('API data was empty. Showing demo dashboard data.', 'info');
+      return;
+    }
 
     saveProfile(profile);
     renderPortal(profile, portalRegistrations, events);
   } catch (error) {
-    showMessage(error.message || 'Unable to load dashboard data.', 'error');
+    const fallbackData = getFallbackPortalData(profile);
+    renderPortal(profile, fallbackData.registrations, fallbackData.events);
+    showMessage('API not available. Showing demo dashboard data.', 'info');
   }
 }
 
