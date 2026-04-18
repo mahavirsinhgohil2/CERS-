@@ -4,3 +4,6 @@ const isLocal = window.location.hostname === 'localhost'
 const API_BASE = isLocal
   ? 'http://localhost:3000'
   : 'https://cers-4occ.onrender.com';
+
+window.API_BASE = API_BASE;
+window.STUDENT_API_BASE = API_BASE;
